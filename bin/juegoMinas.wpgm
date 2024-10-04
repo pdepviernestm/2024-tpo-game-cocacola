@@ -1,0 +1,26 @@
+import minas.*
+import wollok.game.*
+import escenario.*
+import jugador.*
+
+program juegoMinas {
+    game.title("Buscaminas devoxero")
+    game.cellSize(172)
+    game.height(10)
+    game.width(10)
+
+    escenario.inicializar()
+    //COLOCAR MINAS ALEATORIO
+    escenario.colocarMinas()
+    game.addVisualCharacter(jugador)
+    keyboard.space().onPressDo({
+      //escenario.buscarCelda(jugador.position.x(), jugador.position.y()).reaccionEleccion()
+      game.getObjectsIn(jugador.position()).get(0).marcarBloque()
+    })
+    keyboard.enter().onPressDo({
+      //escenario.buscarCelda(jugador.position.x(), jugador.position.y()).reaccionEleccion()
+      game.getObjectsIn(jugador.position()).get(0).reaccionar()
+    })
+
+    game.start()
+}
