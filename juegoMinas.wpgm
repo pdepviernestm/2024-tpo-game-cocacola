@@ -1,40 +1,25 @@
 import minas.*
 import wollok.game.*
+import escenario.*
+import jugador.*
 
 program juegoMinas {
-    game.title("juegoMinas")
-    game.height(30)
-    game.width(50)
-    game.boardGround("fondoBlanco.jpg")
+    game.title("Buscaminas devoxero")
+    game.cellSize(172)
+    game.height(10)
+    game.width(10)
 
-    game.addVisual(bandera)
-    game.addVisual(bomba)
-    game.addVisualCharacter(pepita)
-
-    /*keyboard.right().onPressDo({
-        pepita.position(pepita.position().right(1))
+    escenario.inicializar()
+    //COLOCAR MINAS ALEATORIO
+    escenario.colocarMinas()
+    game.addVisualCharacter(jugador)
+    keyboard.space().onPressDo({
+      //escenario.buscarCelda(jugador.position.x(), jugador.position.y()).reaccionEleccion()
+      game.getObjectsIn(jugador.position()).get(0).marcarBloque()
     })
-    keyboard.left().onPressDo({
-        pepita.position(pepita.position().left(1))
-    })
-    keyboard.up().onPressDo({
-        pepita.position(pepita.position().up(1))
-    })
-    keyboard.down().onPressDo({
-        pepita.position(pepita.position().down(1))
-    })*/
-
-    game.onCollideDo(pepita, {otroObjeto =>
-        if(otroObjeto.reaccionColision() == 2)  
-        {
-            game.say(pepita,"gané")
-            game.schedule(3000, {game.stop()})
-        }
-        else if(otroObjeto.reaccionColision() == 3)
-        {
-            game.say(pepita,"perdi")
-            game.schedule(3000, {game.stop()})
-        }
+    keyboard.enter().onPressDo({
+      //escenario.buscarCelda(jugador.position.x(), jugador.position.y()).reaccionEleccion()
+      game.getObjectsIn(jugador.position()).get(0).reaccionar()
     })
 
     game.start()
