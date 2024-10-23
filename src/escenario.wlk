@@ -32,14 +32,14 @@ object escenario {
   }
 
   method colocarMinas(){
-    var cantCeldas= celdas.size()
-    var cantidadMinas = (cantCeldas / 2) / 2
+    const cantCeldas= celdas.size()
+    const cantidadMinas = (cantCeldas / 2) / 2
     cantidadMinas.times({i => self.colocarMina(cantCeldas)})
   }
   //method patoTirabombas()
   //celdas = [celda, dledlemdc. ]
   method colocarMina(max) {
-    var indice = 0.randomUpTo(max-1)
+    const indice = 0.randomUpTo(max-1)
     if(celdas.get(indice).tieneBomba()){
       self.colocarMina(max)
     } else {
@@ -49,8 +49,8 @@ object escenario {
 }
 
 class Celda {
-  var posX
-  var posY
+  const posX
+  const posY
   var property image = "bloque.png"
   var property position = game.at(posX, posY)
   var bomba = false

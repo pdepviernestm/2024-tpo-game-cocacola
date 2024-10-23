@@ -1,4 +1,3 @@
-import minas.*
 import wollok.game.*
 import escenario.*
 import jugador.*
