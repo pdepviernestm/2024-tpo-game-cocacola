@@ -1,4 +1,4 @@
-# Nombre del juego (<- borrar y completar)
+# Buscaminas devoxero (<- borrar y completar)
 
 ## Equipo de desarrollo
 
