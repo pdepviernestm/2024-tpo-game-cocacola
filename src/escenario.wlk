@@ -1,4 +1,6 @@
 import jugador.*
+import wollok.game.*
+
 object escenario {
   var x = 0
   var y = 0
@@ -14,9 +16,13 @@ object escenario {
     self.ponerCeldas()
     self.inicializarMinas()
     //aca se agregaran cosas como indicadores, tiempo, etc
-  }
-  method liberaCelda(){
-    celdasLibres += 1
+    game.addVisualCharacter(jugador)
+    keyboard.space().onPressDo({
+      game.getObjectsIn(jugador.position()).get(0).marcarBloque()
+    })
+    keyboard.enter().onPressDo({
+      game.getObjectsIn(jugador.position()).get(0).reaccionar(celdasLibres, celdas.size())
+    })
   }
 
   method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()}).size()
@@ -67,6 +73,10 @@ object escenario {
     y = 0
     game.clear()
   }
+
+  method liberarCelda() {
+    celdasLibres += 1
+  }
 }
 
 class Celda {
@@ -75,7 +85,7 @@ class Celda {
   var property image = "bloque.png"
   var property position = game.at(posX, posY)
   var bomba = false
-
+  var bombasAlrededor = 0
   method setImagen(newImage) {
     image = newImage
   }
@@ -99,12 +109,66 @@ class Celda {
       //escenario.mostrarBombas()
     } else {
       //mostrar numero con cantidad de minas alrededor
-      image = "bloqueVacio.jpg"
-      escenario.liberaCelda()
-      if (escenario.celdasLibres() == escenario.celdasSinBomba()) {
-        escenario.reiniciar()
-        escenario.subirNivel()
-        escenario.inicializar()
+      self.liberarCelda()
+      self.liberarCeldasAlrededor()
+      // if (escenario.celdasLibres() == escenario.celdasSinBomba()) {
+      //   escenario.reiniciar()
+      //   escenario.subirNivel()
+      //   escenario.inicializar()
+      // }
+      self.cambiarImagenSegunCantBombas()
+    }
+  }
+  
+  method cambiarImagenSegunCantBombas() {
+    
+  }
+
+  method liberarCelda() {
+    image = "bloqueVacio.jpg"
+    escenario.liberarCelda()
+  }
+
+  method liberarCeldasAlrededor() {
+  //game.getObjectsIn(jugador.position()).get(0).marcarBloque()
+  //celda a derecha
+    var posInicial = jugador.position()
+  //se debe contemplar los casos donde se trate de un bloque ubicado 
+  //en una ubicacion donde no lo que hay alrededor es bloque
+
+  // if getobjects().size() > 0
+    var bloqueAChequear = game.getObjectsIn(posInicial.up(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+
+    bloqueAChequear = game.getObjectsIn(posInicial.down(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+
+    bloqueAChequear = game.getObjectsIn(posInicial.left(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+
+    bloqueAChequear = game.getObjectsIn(posInicial.right(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+
+    //esquinas alrededor
+    bloqueAChequear = game.getObjectsIn(posInicial.right(1).up(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+
+    bloqueAChequear = game.getObjectsIn(posInicial.right(1).down(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+
+    bloqueAChequear = game.getObjectsIn(posInicial.left(1).up(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+
+    bloqueAChequear = game.getObjectsIn(posInicial.left(1).down(1))
+    self.limpiarBloqueElegido(bloqueAChequear)
+  }
+
+  method limpiarBloqueElegido(bloque){
+    if (bloque.size() > 0) {
+      if (not bloque.get(0).tieneBomba()) {
+        bloque.get(0).liberarCelda()
+      } else {
+        bombasAlrededor+=1
       }
     }
   }
