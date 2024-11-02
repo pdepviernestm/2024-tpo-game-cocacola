@@ -1,0 +1,45 @@
+import escenario.*
+import minas.*
+import wollok.game.*
+import jugador.*
+
+program juegoMinas {
+    game.title("Buscaminas")
+//    game.cellSize(200)
+    // game.height(15)
+    // game.width(15)
+
+    keyboard.num1().onPressDo({
+      escenario.setNivel(1)
+      escenario.inicializar()
+    })
+
+    keyboard.num2().onPressDo({
+      escenario.setNivel(2)
+      escenario.inicializar()
+    })
+
+    keyboard.num3().onPressDo({
+      escenario.setNivel(3)
+      escenario.inicializar()
+    })
+    //inicialmente el nivel es 1
+    //cambiar dificultad segun lo elegido
+  
+    // var dificultad = 1
+    // escenario.setNivel(dificultad)
+
+    // escenario.inicializar()
+    // //COLOCAR MINAS ALEATORIO
+    // game.addVisualCharacter(jugador)
+    // keyboard.space().onPressDo({
+    //   //escenario.buscarCelda(jugador.position.x(), jugador.position.y()).reaccionEleccion()
+    //   game.getObjectsIn(jugador.position()).get(0).marcarBloque()
+    // })
+    // keyboard.enter().onPressDo({
+    //   //escenario.buscarCelda(jugador.position.x(), jugador.position.y()).reaccionEleccion()
+    //   game.getObjectsIn(jugador.position()).get(0).reaccionar(escenario.celdasLibres(), escenario.celdas().size())
+    // })
+
+    game.start()
+}
