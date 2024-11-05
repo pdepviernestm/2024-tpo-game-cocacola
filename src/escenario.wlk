@@ -13,21 +13,38 @@ object escenario {
   }
 
   //OK 
+
+  method tableroTerminado() = celdasAbiertas == self.celdasSinBomba().size()
+
   method inicializar(){
     self.ponerCeldas()
     self.inicializarMinas()
-    game.addVisualCharacter(jugador)
+    self.inicializarCeldasEspeciales()
     keyboard.space().onPressDo({
       self.getCeldaPorPosicion(jugador.position()).marcarBloque()
     })
     keyboard.enter().onPressDo({
-      self.getCeldaPorPosicion(jugador.position()).reaccionar(celdasAbiertas, celdas.size())
+      self.getCeldaPorPosicion(jugador.position()).reaccionar()
     })
+    game.addVisualCharacter(jugador)
   }
 
-  method getCeldaPorPosicion(pos) = celdas.find({celda => celda.position() == pos})
+  //agregar metodo de get celda aleatoria(con o sin bomba)
+  method inicializarCeldaEspecial(tipo) {
+    var celdaElegida = self.celdasSinBomba().get(0.randomUpTo(self.celdasSinBomba().size()-1))
+    if (celdaElegida.tipo() == normal) {
+      celdaElegida.tipo(tipo)
+    }
+  }
 
-  method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()}).size()
+  method inicializarCeldasEspeciales() {
+    self.inicializarCeldaEspecial(expansiva)
+    self.incializarCeldaEspecial(revelaBomba)
+  }
+  
+  method getCeldaPorPosicion(pos) = celdas.find({celda => celda.position() == pos})
+  method celdasConBomba() = celdas.filter({celda => celda.tieneBomba()})
+  method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()})
   method ponerCeldas(){
     //pasar 10 como parametro
     var largo = nivel * 5
@@ -72,10 +89,11 @@ object escenario {
     celdas = []
     x = 0
     y = 0
-    game.clear()
+    self.inicializar()
   }
 
   method sumarCeldaLibre() {
     celdasAbiertas += 1
   }
+
 }
