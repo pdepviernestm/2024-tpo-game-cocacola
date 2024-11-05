@@ -10,7 +10,10 @@ class Celda {
   var marcado = false
   var celdasAlrededor = []
   var abierto = false
-  
+
+  method image(nuevaImagen) {
+    image = nuevaImagen
+  }
   method estaAbierto() = abierto
   method position(newPos) {
     position = newPos
@@ -29,6 +32,10 @@ class Celda {
     } 
   }
 
+  method revelarBomba() {
+    image = "bomba.png"
+    abierto = true
+  }
   method tieneBomba() = bomba
 
   method colocarBomba() {
@@ -39,7 +46,15 @@ class Celda {
     if (not abierto) {
       abierto = true
       //busca las celdas alrededor y las guarda
-      celdasAlrededor.add(game.getObjectsIn(position.up(1)))
+      self.getCeldasAlrededor(1)
+      escenario.sumarCeldaLibre()
+      self.calcularBombasAlrededor()
+      self.cambiarImagenSegunCantBombas()
+    }
+  }
+  
+  method getCeldasAlrededor(distancia) {
+    celdasAlrededor.add(game.getObjectsIn(position.up(1)))
       celdasAlrededor.add(game.getObjectsIn(position.down(1)))
       celdasAlrededor.add(game.getObjectsIn(position.left(1)))
       celdasAlrededor.add(game.getObjectsIn(position.right(1)))
@@ -47,16 +62,12 @@ class Celda {
       celdasAlrededor.add(game.getObjectsIn(position.right(1).down(1)))
       celdasAlrededor.add(game.getObjectsIn(position.left(1).up(1)))
       celdasAlrededor.add(game.getObjectsIn(position.left(1).down(1)))
-      escenario.sumarCeldaLibre()
-      self.calcularBombasAlrededor()
-      self.cambiarImagenSegunCantBombas()
-    }
   }
-  method reaccionar(celdasLibres, celdasTotal) {
+    method reaccionar(celda) {
     if(bomba){
       image = "bomba.png"
       //ir de nuevo a menu o reinicio nivel
-
+      game.stop()
       //mostrar bombas
       //escenario.mostrarBombas()
     } else {
@@ -65,11 +76,9 @@ class Celda {
       self.liberarCelda()
       self.liberarCeldasAlrededor()
 
-      // if (escenario.celdasLibres() == escenario.celdasSinBomba()) {
-      //   escenario.reiniciar()
-      //   escenario.subirNivel()
-      //   escenario.inicializar()
-      // }  
+      if (escenario.tableroTerminado()) {
+        game.stop()
+      }  
     }
   }
 
@@ -104,4 +113,3 @@ class Celda {
 
   method hayCelda(espacioCelda) = espacioCelda.size() > 0
 }
-
