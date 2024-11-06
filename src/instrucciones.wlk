@@ -1,17 +1,8 @@
-import escenario.*
-import minas.*
 import wollok.game.*
-import jugador.*
-import menuInicio.*
-
-
-program juegoMinas {
-    game.title("Buscaminas")
-    game.cellSize(200)
-    game.height(21)
-    game.width(21)
-
-    //menuInicio.mostrar()
+import escenario.*
+object instrucciones {
+  method mostrar () {
+    game.boardGround("instrucciones.png")
 
     keyboard.num1().onPressDo({
       escenario.setNivel(1)
@@ -27,7 +18,5 @@ program juegoMinas {
       escenario.setNivel(3)
       escenario.inicializar()
     })
-    
-
-    game.start()
+  }
 }
