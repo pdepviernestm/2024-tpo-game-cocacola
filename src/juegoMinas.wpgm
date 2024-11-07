@@ -1,23 +1,14 @@
 import escenario.*
-import minas.*
 import wollok.game.*
 import jugador.*
-
 
 program juegoMinas {
     game.title("Buscaminas")
     game.cellSize(172)
     game.height(27)
     game.width(27)
-
-    escenario.mostrarInicio()
-    keyboard.enter().onPressDo({
-      if (escenario.nivel() == 0) {
-        escenario.mostrarInstrucciones()
-      } else {
-          escenario.getCeldaPorPosicion(jugador.position()).reaccionar()
-      }
-    })
+    game.addVisual(fondo)
+    escenario.mostrarInstrucciones()
         
     game.start()
 }

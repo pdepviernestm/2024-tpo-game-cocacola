@@ -1,5 +1,9 @@
 import escenario.*
+import escenario.*
 import jugador.*
+
+import wollok.game.*
+
 class Celda {
   var posX
   var posY
@@ -11,7 +15,7 @@ class Celda {
   var marcado = false
   var celdasAlrededor = []
   var abierto = false
-
+  method esCelda() = true
   method tipo() = tipo
   method tipo(nuevoTipo) {
     tipo = nuevoTipo
@@ -62,35 +66,54 @@ class Celda {
   }
   
   method getCeldasAlrededor(distancia) {
-    celdasAlrededor.add(game.getObjectsIn(position.up(distancia)))
-      celdasAlrededor.add(game.getObjectsIn(position.down(distancia)))
-      celdasAlrededor.add(game.getObjectsIn(position.left(distancia)))
-      celdasAlrededor.add(game.getObjectsIn(position.right(distancia)))
-      celdasAlrededor.add(game.getObjectsIn(position.right(distancia).up(distancia)))
-      celdasAlrededor.add(game.getObjectsIn(position.right(distancia).down(distancia)))
-      celdasAlrededor.add(game.getObjectsIn(position.left(distancia).up(distancia)))
-      celdasAlrededor.add(game.getObjectsIn(position.left(distancia).down(distancia)))
+    
+      var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      celdaAgregar = escenario.getCeldaPorPosicion(position.down(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia).up(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia).down(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).up(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).down(distancia))
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)
   }
-    method reaccionar() {
-    if(bomba){
-      image = "bomba.png"
-      //ir de nuevo a menu o reinicio nivel
-      escenario.mostrarBombas()
-      game.stop()
+
+  method agregarCeldaAlrededor (distancia, celdaAAgregar) {
+    if (celdaAAgregar == 0) {
+
     } else {
-      //mostrar numero con cantidad de minas alrededor
-
-      self.liberarCelda()
-      self.liberarCeldasAlrededor()
-
-      if (escenario.tableroTerminado()) {
-        game.say(jugador, "Juego finalizado")
-      }  
+      celdasAlrededor.add(celdaAAgregar)
     }
   }
 
+    method reaccionar() {
+    if (not abierto) {
+      if(bomba){
+        image = "bomba.png"
+        //ir de nuevo a menu o reinicio nivel
+        escenario.mostrarBombas()
+        game.stop()
+      } else {
+        //mostrar numero con cantidad de minas alrededor
+        self.liberarCelda()
+        self.liberarCeldasAlrededor()
+
+        if(escenario.tableroTerminado()) {
+          game.stop()
+        }
+      }
+      }
+    }
+
   method calcularBombasAlrededor() {
-    bombasAlrededor = celdasAlrededor.filter({celda => self.hayCelda(celda) && celda.get(0).tieneBomba()}).size()
+    bombasAlrededor = celdasAlrededor.filter({celda => celda.tieneBomba()}).size()
   }
   
   method cambiarImagenSegunCantBombas() {
@@ -109,12 +132,9 @@ class Celda {
     celdasAlrededor.forEach({celda => self.liberarCeldaCercana(celda)})
   }
 
-  method liberarCeldaCercana(espacioCelda){
-    if (self.hayCelda(espacioCelda)) {
-      if (not espacioCelda.get(0).tieneBomba()) {
-        espacioCelda.get(0).liberarCelda()
-        escenario.sumarCeldaLibre()
-      }
+  method liberarCeldaCercana(celda){
+    if (not celda.tieneBomba()) {
+      celda.liberarCelda()
     }
   }
 

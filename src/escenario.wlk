@@ -9,7 +9,9 @@ object escenario {
   var property celdas = []
   var property nivel = 0
   method mostrarInicio() {
-    game.addVisual(fondo)
+    keyboard.enter().onPressDo({
+        escenario.mostrarInstrucciones()
+    })
   }
 
   method mostrarInstrucciones() {
@@ -42,9 +44,14 @@ object escenario {
     fondo.image("fondo1.jpg")
     self.ponerCeldas()
     self.inicializarMinas()
-    if (nivel != 1)  self.inicializarCeldasEspeciales()
+    if (nivel != 1)  {
+      self.inicializarCeldasEspeciales()
+    }
     keyboard.space().onPressDo({
       self.getCeldaPorPosicion(jugador.position()).marcarBloque()
+    })
+    keyboard.enter().onPressDo({
+      self.getCeldaPorPosicion(jugador.position()).reaccionar()
     })
     game.addVisualCharacter(jugador)
   }
@@ -64,7 +71,15 @@ object escenario {
     })
   }
   
-  method getCeldaPorPosicion(pos) = celdas.find({celda => celda.position() == pos})
+  method getCeldaPorPosicion(pos) {
+    const celdasEncontradas = celdas.filter({celda => celda.position() == pos})
+    //para contemplar el caso donde no hay celda
+    if(celdasEncontradas.size() > 0){
+      return celdasEncontradas.get(0)
+    } else {
+      return 0
+    }
+  }
   method celdasConBomba() = celdas.filter({celda => celda.tieneBomba()})
   method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()})
   method ponerCeldas(){
@@ -124,7 +139,8 @@ object escenario {
 object fondo {
   var property position = game.center()
   var property image = "inicio3.png"
-  //var position = game.center()
+  method esCelda() = false
+   //var position = game.center()
   method image(nuevaImagen) {
     image = nuevaImagen
   }
