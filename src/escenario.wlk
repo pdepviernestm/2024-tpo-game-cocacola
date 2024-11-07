@@ -70,16 +70,7 @@ object escenario {
       self.inicializarCeldaEspecial(revelaBomba)
     })
   }
-  
-  method getCeldaPorPosicion(pos) {
-    const celdasEncontradas = celdas.filter({celda => celda.position() == pos})
-    //para contemplar el caso donde no hay celda
-    if(celdasEncontradas.size() > 0){
-      return celdasEncontradas.get(0)
-    } else {
-      return 0
-    }
-  }
+  method getCeldaPorPosicion(pos) = celdas.findOrElse({celda => celda.position() == pos}, {0})
   method celdasConBomba() = celdas.filter({celda => celda.tieneBomba()})
   method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()})
   method ponerCeldas(){
