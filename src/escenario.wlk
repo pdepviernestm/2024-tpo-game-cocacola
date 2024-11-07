@@ -1,13 +1,34 @@
 import jugador.*
 import wollok.game.*
 import celda.*
+
 object escenario {
   var x = 0
   var y = 0
   var property celdasAbiertas = 0
   var property celdas = []
-  var nivel = 0
+  var property nivel = 0
+  method mostrarInicio() {
+    game.addVisual(fondo)
+  }
 
+  method mostrarInstrucciones() {
+    fondo.image("instrucciones1.png")
+    keyboard.num1().onPressDo({
+      self.setNivel(1)
+      self.inicializar()
+    })
+
+    keyboard.num2().onPressDo({
+      self.setNivel(2)
+      self.inicializar()
+    })
+
+    keyboard.num3().onPressDo({
+      self.setNivel(3)
+      self.inicializar()
+    })
+  }
   method setNivel(nuevoNivel) {
     nivel = nuevoNivel
   }
@@ -17,14 +38,13 @@ object escenario {
   method tableroTerminado() = celdasAbiertas == self.celdasSinBomba().size()
 
   method inicializar(){
+    //game.boardGround("fondo.jpg")
+    fondo.image("fondo1.jpg")
     self.ponerCeldas()
     self.inicializarMinas()
-    self.inicializarCeldasEspeciales()
+    if (nivel != 1)  self.inicializarCeldasEspeciales()
     keyboard.space().onPressDo({
       self.getCeldaPorPosicion(jugador.position()).marcarBloque()
-    })
-    keyboard.enter().onPressDo({
-      self.getCeldaPorPosicion(jugador.position()).reaccionar()
     })
     game.addVisualCharacter(jugador)
   }
@@ -48,8 +68,7 @@ object escenario {
   method celdasConBomba() = celdas.filter({celda => celda.tieneBomba()})
   method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()})
   method ponerCeldas(){
-    //pasar 10 como parametro
-    var largo = nivel * 6
+    var largo = nivel * 7
     self.agregarCeldas(largo)
     celdas.forEach( {p => game.addVisual(p)})
   }
@@ -97,5 +116,16 @@ object escenario {
   method sumarCeldaLibre() {
     celdasAbiertas += 1
   }
+  method mostrarBombas() {
+    self.celdasConBomba().forEach({celda => celda.revelarBomba()})
+  }
+}
 
+object fondo {
+  var property position = game.center()
+  var property image = "inicio3.png"
+  //var position = game.center()
+  method image(nuevaImagen) {
+    image = nuevaImagen
+  }
 }

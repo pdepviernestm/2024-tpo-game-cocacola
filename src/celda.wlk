@@ -42,6 +42,7 @@ class Celda {
     image = "bomba.png"
     abierto = true
   }
+  
   method tieneBomba() = bomba
 
   method colocarBomba() {
@@ -74,9 +75,8 @@ class Celda {
     if(bomba){
       image = "bomba.png"
       //ir de nuevo a menu o reinicio nivel
-      //game.stop()
-      //mostrar bombas
-      //escenario.mostrarBombas()
+      escenario.mostrarBombas()
+      game.stop()
     } else {
       //mostrar numero con cantidad de minas alrededor
 
@@ -84,7 +84,7 @@ class Celda {
       self.liberarCeldasAlrededor()
 
       if (escenario.tableroTerminado()) {
-        game.stop()
+        game.say(jugador, "Juego finalizado")
       }  
     }
   }
