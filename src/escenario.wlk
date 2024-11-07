@@ -10,7 +10,7 @@ object escenario {
   var property nivel = 0
   method mostrarInicio() {
     keyboard.enter().onPressDo({
-        escenario.mostrarInstrucciones()
+        self.mostrarInstrucciones()
     })
   }
 
@@ -83,7 +83,7 @@ object escenario {
   method celdasConBomba() = celdas.filter({celda => celda.tieneBomba()})
   method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()})
   method ponerCeldas(){
-    var largo = nivel * 7
+    const largo = nivel * 7
     self.agregarCeldas(largo)
     celdas.forEach( {p => game.addVisual(p)})
   }
@@ -102,13 +102,13 @@ object escenario {
   }
 
   method inicializarMinas(){
-    var cantCeldas = celdas.size()
-    var cantidadMinas = (cantCeldas / 2) / 2
+    const cantCeldas = celdas.size()
+    const cantidadMinas = (cantCeldas / 2) / 2
     cantidadMinas.times({i => self.colocarMina(cantCeldas)})
   }
   
   method colocarMina(max) {
-    var indice = 0.randomUpTo(max-1)
+    const indice = 0.randomUpTo(max-1)
     if(celdas.get(indice).tieneBomba()){
       self.colocarMina(max)
     } else {

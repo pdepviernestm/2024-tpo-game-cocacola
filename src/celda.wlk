@@ -1,19 +1,18 @@
 import escenario.*
-import escenario.*
 import jugador.*
 
 import wollok.game.*
 
 class Celda {
-  var posX
-  var posY
+  const posX
+  const posY
   var tipo
   var property image = "bloque.png"
   var property position = game.at(posX, posY)
   var bomba = false
   var bombasAlrededor = 0
   var marcado = false
-  var celdasAlrededor = []
+  const celdasAlrededor = []
   var abierto = false
   method esCelda() = true
   method tipo() = tipo
@@ -161,7 +160,7 @@ object revelaBomba {
     2.times({i => self.elegirYRevelarBomba()})
   }
   method elegirYRevelarBomba() {
-    var celdaElegida = self.elegirCeldaAleatoria()   
+    const celdaElegida = self.elegirCeldaAleatoria()   
     celdaElegida.revelarBomba()
   }
   method elegirCeldaAleatoria() = escenario.celdasConBomba().get(0.randomUpTo(escenario.celdasConBomba().size()-1))
