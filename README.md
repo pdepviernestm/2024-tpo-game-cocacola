@@ -1,4 +1,4 @@
-# Buscaminas (wollok edition)
+# Buscaminas devoxero (<- borrar y completar)
 
 ## Equipo de desarrollo
 

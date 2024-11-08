@@ -3,14 +3,16 @@ import wollok.game.*
 import celda.*
 
 object escenario {
-  var x = 0
-  var y = 0
+  var x = 8
+  var y = 8
   var property celdasAbiertas = 0
   var property celdas = []
   var property nivel = 0
   method mostrarInicio() {
     keyboard.enter().onPressDo({
+      if(nivel == 0) {
         self.mostrarInstrucciones()
+      }
     })
   }
 
@@ -85,7 +87,7 @@ object escenario {
   method agregarFila(longitud) {
     longitud.times({i => self.hacerBloqueX()})
     y+=1
-    x=0
+    x=8
   }
   method hacerBloqueX() {
     celdas.add(new Celda(posX = x, posY = y, tipo = normal))

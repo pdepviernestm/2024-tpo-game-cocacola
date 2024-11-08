@@ -1,5 +1,5 @@
 object jugador{
-    var position = game.at(0,0)
+    var position = game.at(8,8)
     
     method esCelda() = false
     method position() = position
