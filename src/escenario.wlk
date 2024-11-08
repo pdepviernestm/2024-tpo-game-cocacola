@@ -111,17 +111,11 @@ object escenario {
     nivel += 1
   }
 
-  method reiniciar() {
-    celdasAbiertas = 0
-    celdas = []
-    x = 0
-    y = 0
-    self.inicializar()
-  }
 
   method sumarCeldaLibre() {
     celdasAbiertas += 1
   }
+  
   method mostrarBombas() {
     self.celdasConBomba().forEach({celda => celda.revelarBomba()})
   }

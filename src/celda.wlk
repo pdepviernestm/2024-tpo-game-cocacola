@@ -12,7 +12,7 @@ class Celda {
   var bomba = false
   var bombasAlrededor = 0
   var marcado = false
-  var celdasAlrededor = []
+  const celdasAlrededor = []
   var abierto = false
   method esCelda() = true
   method tipo() = tipo
@@ -64,42 +64,37 @@ class Celda {
     }
   }
   
-  method getCeldasAlrededor(distancia) {
-    
-      /*var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+  method getCeldasAlrededor(distancia) { 
+      var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
+      self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.down(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia).up(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia).down(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).up(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).down(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)*/
+      self.agregarCeldaAlrededor(celdaAgregar)
 
-      celdasAlrededor = escenario.celdas().filter({celda => celda.position() == game.at(jugador.getPosX(), jugador.getPosY()+1) || 
-      celda.position() == game.at(jugador.getPosX(), jugador.getPosY()-1) ||
-      celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()) ||
-      celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()+1) ||
-      celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()-1) ||
-      celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()) ||
-      celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()+1)
-      celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()-1)})
+      // celdasAlrededor = escenario.celdas().filter({celda => celda.position() == game.at(jugador.getPosX(), jugador.getPosY()+1) || 
+      // celda.position() == game.at(jugador.getPosX(), jugador.getPosY()-1) ||
+      // celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()) ||
+      // celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()+1) ||
+      // celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()-1) ||
+      // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()) ||
+      // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()+1)
+      // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()-1)})
   }
 
-  /*method agregarCeldaAlrededor (distancia, celdaAAgregar) {
-    if (celdaAAgregar == 0) {
-
-    } else {
-      celdasAlrededor.add(celdaAAgregar)
-    }
-  }*/
+  method agregarCeldaAlrededor (celdaAAgregar) {
+    if (celdaAAgregar != 0) celdasAlrededor.add(celdaAAgregar)
+  }
 
     method reaccionar() {
     if (not abierto) {
@@ -145,33 +140,31 @@ class Celda {
       celda.liberarCelda()
     }
   }
-
-  method hayCelda(espacioCelda) = espacioCelda.size() > 0
-
 }
 
-object normal {
-  method aplicarEfectos(celda) {
-  }
+class TipoCelda {
+  method aplicarEfectos(celda) {}
 
-  method esNormal() = true
+  method esNormal() = false
+}
+object normal inherits TipoCelda{
+  override method esNormal() = true
 }
 
-object expansiva {
-  method aplicarEfectos(celda) {
+object expansiva inherits TipoCelda{
+  override method aplicarEfectos(celda) {
     celda.getCeldasAlrededor(2)
   }
-  method esNormal() = true
 }
 
-object revelaBomba {
-  method aplicarEfectos(celda)  {
+object revelaBomba inherits TipoCelda{
+  override method aplicarEfectos(celda)  {
     2.times({i => self.elegirYRevelarBomba()})
   }
+
   method elegirYRevelarBomba() {
     const celdaElegida = self.elegirCeldaAleatoria()   
     celdaElegida.revelarBomba()
   }
   method elegirCeldaAleatoria() = escenario.celdasConBomba().get(0.randomUpTo(escenario.celdasConBomba().size()-1))
-  method esNormal() = true
 }
