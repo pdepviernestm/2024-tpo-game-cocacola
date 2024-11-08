@@ -1,11 +1,17 @@
 object jugador{
-    var position = game.at(0,0)
+    var posX = 0
+    var posY = 0
+    const position = game.at(posX,posY)
+
+    method getPosX() = posX
+    method getPosY() = posY
     
     method esCelda() = false
     method position() = position
-    method position(newPos) {
+    method position(x, y) {
       //game.say(self, "hola")
-      position = newPos
+      posX = x
+      posY = y
     }
     method image() = "bloqueElegido.png"
 }

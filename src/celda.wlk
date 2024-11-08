@@ -12,7 +12,7 @@ class Celda {
   var bomba = false
   var bombasAlrededor = 0
   var marcado = false
-  const celdasAlrededor = []
+  var celdasAlrededor = []
   var abierto = false
   method esCelda() = true
   method tipo() = tipo
@@ -66,7 +66,7 @@ class Celda {
   
   method getCeldasAlrededor(distancia) {
     
-      var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
+      /*var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
       self.agregarCeldaAlrededor(distancia, celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.down(distancia))
       self.agregarCeldaAlrededor(distancia, celdaAgregar)
@@ -81,16 +81,25 @@ class Celda {
       celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).up(distancia))
       self.agregarCeldaAlrededor(distancia, celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).down(distancia))
-      self.agregarCeldaAlrededor(distancia, celdaAgregar)
+      self.agregarCeldaAlrededor(distancia, celdaAgregar)*/
+
+      celdasAlrededor = escenario.celdas().filter({celda => celda.position() == game.at(jugador.getPosX(), jugador.getPosY()+1) || 
+      celda.position() == game.at(jugador.getPosX(), jugador.getPosY()-1) ||
+      celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()) ||
+      celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()+1) ||
+      celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()-1) ||
+      celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()) ||
+      celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()+1)
+      celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()-1)})
   }
 
-  method agregarCeldaAlrededor (distancia, celdaAAgregar) {
+  /*method agregarCeldaAlrededor (distancia, celdaAAgregar) {
     if (celdaAAgregar == 0) {
 
     } else {
       celdasAlrededor.add(celdaAAgregar)
     }
-  }
+  }*/
 
     method reaccionar() {
     if (not abierto) {
