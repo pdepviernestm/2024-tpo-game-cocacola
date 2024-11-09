@@ -1,4 +1,5 @@
 import escenario.*
+import escenario.*
 import jugador.*
 
 import wollok.game.*
@@ -52,20 +53,46 @@ class Celda {
     bomba = true
   }
 
-  method liberarCelda() {
+  method liberarCelda(cantCeldasPorFila) {
     if (not abierto) {
       abierto = true
       //busca las celdas alrededor y las guarda
-      //self.getCeldasAlrededor(1)
+      self.getCeldasAlrededor(cantCeldasPorFila)
       escenario.sumarCeldaLibre()
-      //self.calcularBombasAlrededor()
-      //self.cambiarImagenSegunCantBombas()
+      self.calcularBombasAlrededor()
+      self.cambiarImagenSegunCantBombas()
       tipo.aplicarEfectos(self)
     }
   }
   
-  method getCeldasAlrededor(distancia) { 
-      var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
+  method getCeldasAlrededor(cantCeldasPorFila) { 
+      const posJugadorX = jugador.position().x() - 8
+      const posJugadorY = jugador.position().y() - 8
+      var posicionAgregar = (posJugadorX + 1) + (posJugadorY * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // derecha
+      posicionAgregar = (posJugadorX - 1) + (posJugadorY * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // izquierda
+      posicionAgregar = posJugadorX + ((posJugadorY + 1) * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // arriba
+      posicionAgregar = posJugadorX + ((posJugadorY - 1) * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // abajo
+      posicionAgregar = (posJugadorX + 1) + ((posJugadorY + 1) * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup derecha
+      posicionAgregar = (posJugadorX - 1) + ((posJugadorY + 1) * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup izq
+      posicionAgregar = (posJugadorX + 1) + ((posJugadorY - 1) * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf der
+      posicionAgregar = (posJugadorX - 1) + ((posJugadorY - 1) * cantCeldasPorFila)
+      if(posicionAgregar >= 0)
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf izq
+      /*var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
       self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.down(distancia))
       self.agregarCeldaAlrededor(celdaAgregar)
@@ -80,16 +107,8 @@ class Celda {
       celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).up(distancia))
       self.agregarCeldaAlrededor(celdaAgregar)
       celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).down(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
+      self.agregarCeldaAlrededor(celdaAgregar)*/
 
-      // celdasAlrededor = escenario.celdas().filter({celda => celda.position() == game.at(jugador.getPosX(), jugador.getPosY()+1) || 
-      // celda.position() == game.at(jugador.getPosX(), jugador.getPosY()-1) ||
-      // celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()) ||
-      // celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()+1) ||
-      // celda.position() == game.at(jugador.getPosX()-1, jugador.getPosY()-1) ||
-      // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()) ||
-      // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()+1)
-      // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()-1)})
       //NO USAR FIND
       // ABC
       // DEF
@@ -102,10 +121,10 @@ class Celda {
   }
 
   method agregarCeldaAlrededor (celdaAAgregar) {
-    if (celdaAAgregar != 0) celdasAlrededor.add(celdaAAgregar)
+    celdasAlrededor.add(celdaAAgregar)
   }
 
-    method reaccionar() {
+    method reaccionar(cantCeldasPorFila) {
     if (not abierto) {
       if(bomba){
         image = "bomba.png"
@@ -114,7 +133,7 @@ class Celda {
         game.stop()
       } else {
         //mostrar numero con cantidad de minas alrededor
-        self.liberarCelda()
+        self.liberarCelda(cantCeldasPorFila)
         self.liberarCeldasAlrededor()
 
         if(escenario.tableroTerminado()) {

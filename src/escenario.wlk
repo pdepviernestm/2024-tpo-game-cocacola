@@ -8,6 +8,9 @@ object escenario {
   var property celdasAbiertas = 0
   var property celdas = []
   var property nivel = 0
+
+  method getCeldas() = celdas
+
   method mostrarInicio() {
     keyboard.enter().onPressDo({
       if(nivel == 0) {
@@ -53,7 +56,7 @@ object escenario {
       self.getCeldaPorPosicion(jugador.position()).marcarBloque()
     })
     keyboard.enter().onPressDo({
-      self.getCeldaPorPosicion(jugador.position()).reaccionar()
+      self.getCeldaPorPosicion(jugador.position()).reaccionar(nivel * 7)
     })
     game.addVisualCharacter(jugador)
   }
@@ -72,7 +75,7 @@ object escenario {
       self.inicializarCeldaEspecial(revelaBomba)
     })
   }
-  method getCeldaPorPosicion(pos) = celdas.findOrElse({celda => celda.position() == pos}, {0})
+  method getCeldaPorPosicion(pos) = self.getCeldas().get((pos.x()-8) + ((pos.y()-8) * (nivel * 7)))     //celdas.findOrElse({celda => celda.position() == pos}, {0})
   method celdasConBomba() = celdas.filter({celda => celda.tieneBomba()})
   method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()})
   method ponerCeldas(){
