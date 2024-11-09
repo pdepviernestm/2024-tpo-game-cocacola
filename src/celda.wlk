@@ -56,10 +56,10 @@ class Celda {
     if (not abierto) {
       abierto = true
       //busca las celdas alrededor y las guarda
-      self.getCeldasAlrededor(1)
+      //self.getCeldasAlrededor(1)
       escenario.sumarCeldaLibre()
-      self.calcularBombasAlrededor()
-      self.cambiarImagenSegunCantBombas()
+      //self.calcularBombasAlrededor()
+      //self.cambiarImagenSegunCantBombas()
       tipo.aplicarEfectos(self)
     }
   }
