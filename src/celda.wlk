@@ -134,7 +134,7 @@ class Celda {
       } else {
         //mostrar numero con cantidad de minas alrededor
         self.liberarCelda(cantCeldasPorFila)
-        self.liberarCeldasAlrededor()
+        self.liberarCeldasAlrededor(cantCeldasPorFila)
 
         if(escenario.tableroTerminado()) {
           game.stop()
@@ -159,13 +159,13 @@ class Celda {
 
     
 
-  method liberarCeldasAlrededor() {
-    celdasAlrededor.forEach({celda => self.liberarCeldaCercana(celda)})
+  method liberarCeldasAlrededor(cantCeldasPorFila) {
+    celdasAlrededor.forEach({celda => self.liberarCeldaCercana(celda, cantCeldasPorFila)})
   }
 
-  method liberarCeldaCercana(celda){
+  method liberarCeldaCercana(celda, cantCeldasPorFila){
     if (not celda.tieneBomba()) {
-      celda.liberarCelda()
+      celda.liberarCelda(cantCeldasPorFila)
     }
   }
 }
