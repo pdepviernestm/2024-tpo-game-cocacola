@@ -90,6 +90,15 @@ class Celda {
       // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()) ||
       // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()+1)
       // celda.position() == game.at(jugador.getPosX()+1, jugador.getPosY()-1)})
+      //NO USAR FIND
+      // ABC
+      // DEF
+      // GHI
+
+      //E = POS
+      //A = E.POS -4
+      //USAR ACCESO DIRECTO
+      //
   }
 
   method agregarCeldaAlrededor (celdaAAgregar) {
