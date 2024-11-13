@@ -9,6 +9,8 @@ object escenario {
   var property celdas = []
   var property nivel = 0
 
+
+
   method getCeldas() = celdas
 
   method mostrarInicio() {
@@ -75,7 +77,7 @@ object escenario {
       self.inicializarCeldaEspecial(revelaBomba)
     })
   }
-  method getCeldaPorPosicion(pos) = self.getCeldas().get((pos.x()-8) + ((pos.y()-8) * (nivel * 7)))     //celdas.findOrElse({celda => celda.position() == pos}, {0})
+  method getCeldaPorPosicion(pos) = celdas.find({celda => celda.position() == pos})
   method celdasConBomba() = celdas.filter({celda => celda.tieneBomba()})
   method celdasSinBomba() = celdas.filter({celda => not celda.tieneBomba()})
   method ponerCeldas(){

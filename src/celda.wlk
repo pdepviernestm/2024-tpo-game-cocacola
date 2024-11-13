@@ -1,4 +1,4 @@
-import escenario.*
+import wollok.game.*
 import escenario.*
 import jugador.*
 
@@ -57,7 +57,8 @@ class Celda {
     if (not abierto) {
       abierto = true
       //busca las celdas alrededor y las guarda
-      self.getCeldasAlrededor(cantCeldasPorFila)
+      //cambiar por distancia
+      self.getCeldasAlrededor(cantCeldasPorFila, 1)
       escenario.sumarCeldaLibre()
       self.calcularBombasAlrededor()
       self.cambiarImagenSegunCantBombas()
@@ -65,61 +66,80 @@ class Celda {
     }
   }
   
-  method getCeldasAlrededor(cantCeldasPorFila) { 
-      const posJugadorX = jugador.position().x() - 8
-      const posJugadorY = jugador.position().y() - 8
-      var posicionAgregar = (posJugadorX + 1) + (posJugadorY * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // derecha
-      posicionAgregar = (posJugadorX - 1) + (posJugadorY * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // izquierda
-      posicionAgregar = posJugadorX + ((posJugadorY + 1) * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // arriba
-      posicionAgregar = posJugadorX + ((posJugadorY - 1) * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // abajo
-      posicionAgregar = (posJugadorX + 1) + ((posJugadorY + 1) * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup derecha
-      posicionAgregar = (posJugadorX - 1) + ((posJugadorY + 1) * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup izq
-      posicionAgregar = (posJugadorX + 1) + ((posJugadorY - 1) * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf der
-      posicionAgregar = (posJugadorX - 1) + ((posJugadorY - 1) * cantCeldasPorFila)
-      if(posicionAgregar >= 0)
-      self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf izq
-      /*var celdaAgregar = escenario.getCeldaPorPosicion(position.up(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
-      celdaAgregar = escenario.getCeldaPorPosicion(position.down(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
-      celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
-      celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
-      celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia).up(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
-      celdaAgregar = escenario.getCeldaPorPosicion(position.right(distancia).down(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
-      celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).up(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)
-      celdaAgregar = escenario.getCeldaPorPosicion(position.left(distancia).down(distancia))
-      self.agregarCeldaAlrededor(celdaAgregar)*/
+  method getCeldasAlrededor(cantCeldasPorFila, distancia) { 
+    //x = 8
+    // y = 8
 
-      //NO USAR FIND
-      // ABC
-      // DEF
-      // GHI
+    //modificar posjugadorx-1 por jugadorx - distancia
+    // contemplar casos de espacios donde no hay celdas
+      const posicionX = self.position().x() - 8
+      const posicionY = self.position().y() - 8
 
-      //E = POS
-      //A = E.POS -4
-      //USAR ACCESO DIRECTO
-      //
+      var posicionAgregarX = posicionX + distancia
+      var posicionAgregarY = posicionY
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //derecha
+
+      posicionAgregarX = posicionX - distancia
+      posicionAgregarY = posicionY 
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //izquierda
+
+      posicionAgregarX = posicionX
+      posicionAgregarY = (posicionY + distancia) 
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //arriba
+
+      posicionAgregarX = posicionX
+      posicionAgregarY = (posicionY - distancia) 
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //abajo
+
+      posicionAgregarX = posicionX - distancia
+      posicionAgregarY = (posicionY + distancia) 
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //esq sup izq
+
+      posicionAgregarX = posicionX + distancia
+      posicionAgregarY = (posicionY + distancia) 
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //esq sup der
+
+      posicionAgregarX = posicionX - distancia
+      posicionAgregarY = (posicionY - distancia) 
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //esq sup izq
+
+      posicionAgregarX = posicionX + distancia
+      posicionAgregarY = (posicionY - distancia)
+      self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //esq sup izq
+
+      // var posicionAgregar = (posJugadorX + 1) + (posJugadorY * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // derecha
+      // posicionAgregar = (posJugadorX - 1) + (posJugadorY * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // izquierda
+      // posicionAgregar = posJugadorX + ((posJugadorY + 1) * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // arriba
+      // posicionAgregar = posJugadorX + ((posJugadorY - 1) * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // abajo
+      // posicionAgregar = (posJugadorX + 1) + ((posJugadorY + 1) * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup derecha
+      // posicionAgregar = (posJugadorX - 1) + ((posJugadorY + 1) * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup izq
+      // posicionAgregar = (posJugadorX + 1) + ((posJugadorY - 1) * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf der
+      // posicionAgregar = (posJugadorX - 1) + ((posJugadorY - 1) * cantCeldasPorFila)
+      // if(posicionAgregar >= 0)
+      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf izq
   }
-
+  method verificarYAgregarPosicion(x, y, celdasPorFila) {//verificar que sea posicion valida(sin x o y negativos)
+  //FALTA VERIFICAR QUE NO SEA UN BLOQUE FUERA A LA DERECHA DEL TABLERO
+  //pasar celdas por fila como param
+  //game.say(jugador, x + y)
+    if ((x >= 0) && (y >= 0) && (x < celdasPorFila) && (y < celdasPorFila)) {
+      self.agregarCeldaAlrededor(escenario.getCeldas().get(x + y * celdasPorFila))
+    }
+  }
   method agregarCeldaAlrededor (celdaAAgregar) {
     celdasAlrededor.add(celdaAAgregar)
   }
@@ -130,7 +150,7 @@ class Celda {
         image = "bomba.png"
         //ir de nuevo a menu o reinicio nivel
         escenario.mostrarBombas()
-        game.stop()
+        //game.stop()
       } else {
         //mostrar numero con cantidad de minas alrededor
         self.liberarCelda(cantCeldasPorFila)
