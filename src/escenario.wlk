@@ -42,13 +42,11 @@ object escenario {
     nivel = nuevoNivel
   }
 
-  //OK 
-
   method tableroTerminado() = celdasAbiertas == self.celdasSinBomba().size()
 
   method inicializar(){
-    //game.boardGround("fondo.jpg")
-    fondo.image("fondo1.jpg")
+    //no se uso boardGround porque no cambiaba la imagen al instante
+    fondo.image("fondo.jpg")
     self.ponerCeldas()
     self.inicializarMinas()
     if (nivel != 1)  {
@@ -63,7 +61,6 @@ object escenario {
     game.addVisualCharacter(jugador)
   }
 
-  //agregar metodo de get celda aleatoria(con o sin bomba)
   method inicializarCeldaEspecial(tipo) {
     const celdaElegida = self.celdasSinBomba().get(0.randomUpTo(self.celdasSinBomba().size()-1))
     if (celdaElegida.tipo().esNormal()) {
@@ -132,7 +129,6 @@ object fondo {
   var property position = game.center()
   var property image = "inicio3.png"
   method esCelda() = false
-   //var position = game.center()
   method image(nuevaImagen) {
     image = nuevaImagen
   }

@@ -2,8 +2,6 @@ import wollok.game.*
 import escenario.*
 import jugador.*
 
-import wollok.game.*
-
 class Celda {
   const posX
   const posY
@@ -57,7 +55,6 @@ class Celda {
     if (not abierto) {
       abierto = true
       //busca las celdas alrededor y las guarda
-      //cambiar por distancia
       self.getCeldasAlrededor(cantCeldasPorFila, 1)
       escenario.sumarCeldaLibre()
       self.calcularBombasAlrededor()
@@ -106,36 +103,9 @@ class Celda {
       posicionAgregarX = posicionX + distancia
       posicionAgregarY = (posicionY - distancia)
       self.verificarYAgregarPosicion(posicionAgregarX, posicionAgregarY, cantCeldasPorFila) //esq sup izq
-
-      // var posicionAgregar = (posJugadorX + 1) + (posJugadorY * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // derecha
-      // posicionAgregar = (posJugadorX - 1) + (posJugadorY * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // izquierda
-      // posicionAgregar = posJugadorX + ((posJugadorY + 1) * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // arriba
-      // posicionAgregar = posJugadorX + ((posJugadorY - 1) * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // abajo
-      // posicionAgregar = (posJugadorX + 1) + ((posJugadorY + 1) * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup derecha
-      // posicionAgregar = (posJugadorX - 1) + ((posJugadorY + 1) * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal sup izq
-      // posicionAgregar = (posJugadorX + 1) + ((posJugadorY - 1) * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf der
-      // posicionAgregar = (posJugadorX - 1) + ((posJugadorY - 1) * cantCeldasPorFila)
-      // if(posicionAgregar >= 0)
-      // self.agregarCeldaAlrededor(escenario.getCeldas().get(posicionAgregar))  // diagonal inf izq
   }
-  method verificarYAgregarPosicion(x, y, celdasPorFila) {//verificar que sea posicion valida(sin x o y negativos)
-  //FALTA VERIFICAR QUE NO SEA UN BLOQUE FUERA A LA DERECHA DEL TABLERO
-  //pasar celdas por fila como param
-  //game.say(jugador, x + y)
+  method verificarYAgregarPosicion(x, y, celdasPorFila) {
+    //verificar que sea posicion valida(sin x o y negativos)
     if ((x >= 0) && (y >= 0) && (x < celdasPorFila) && (y < celdasPorFila)) {
       self.agregarCeldaAlrededor(escenario.getCeldas().get(x + y * celdasPorFila))
     }
@@ -150,7 +120,7 @@ class Celda {
         image = "bomba.png"
         //ir de nuevo a menu o reinicio nivel
         escenario.mostrarBombas()
-        //game.stop()
+        game.stop()
       } else {
         //mostrar numero con cantidad de minas alrededor
         self.liberarCelda(cantCeldasPorFila)

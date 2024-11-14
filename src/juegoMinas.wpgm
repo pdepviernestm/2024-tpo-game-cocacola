@@ -8,21 +8,6 @@ program juegoMinas {
     game.height(27)
     game.width(27)
     game.addVisual(fondo)
-    escenario.mostrarInicio()
-    // keyboard.num1().onPressDo({
-    //   escenario.setNivel(1)
-    //   escenario.inicializar()
-    // })
-
-    // keyboard.num2().onPressDo({
-    //   escenario.setNivel(2)
-    //   escenario.inicializar()
-    // })
-
-    // keyboard.num3().onPressDo({
-    //   escenario.setNivel(3)
-    //   escenario.inicializar()
-    // })
-        
+    escenario.mostrarInicio()        
     game.start()
 }
