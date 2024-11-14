@@ -1,10 +1,10 @@
-# Buscaminas devoxero (<- borrar y completar)
+# Buscaminas
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+- Gonzalo Purita
+- Leonardo Guti
+- Santiago Gomez de Salazar
 
 ## Capturas
 
@@ -12,7 +12,11 @@
 
 ## Reglas de Juego / Instrucciones
 
-(Escribirlas)
+- Con el Enter interacciona con las celdas
+- Con el espacio marcas las posibles bombas
+- Si abris una celda y se encuentra una bomba perdes
+- Si sos capaz de abrir todas las celdas ganas
+- los numeros delimitan la cantidad de bomas que tocan esa celda
 
 
 ## Otros
