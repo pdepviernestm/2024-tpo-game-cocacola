@@ -1,0 +1,13 @@
+import escenario.*
+import wollok.game.*
+import jugador.*
+
+program juegoMinas {
+    game.title("Buscaminas")
+    game.cellSize(172)
+    game.height(27)
+    game.width(27)
+    game.addVisual(fondo)
+    escenario.mostrarInicio()        
+    game.start()
+}
