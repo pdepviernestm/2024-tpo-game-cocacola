@@ -3,7 +3,7 @@
 ## Equipo de desarrollo
 
 - Gonzalo Purita
-- Leonardo Guti
+- Leonardo Gutierrez Zevallos
 - Santiago Gomez de Salazar
 
 ## Capturas
