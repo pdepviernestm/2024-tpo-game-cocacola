@@ -16,6 +16,7 @@
 - Con el espacio marcas las posibles bombas
 - Si abris una celda y se encuentra una bomba perdes
 - Si sos capaz de abrir todas las celdas ganas
+- Las celdas azules representan celdas que no hay bombas alrededor
 - los numeros delimitan la cantidad de bomas que tocan esa celda
 
 
